@@ -8,14 +8,10 @@ fn main() {
     let day = &args[1];
     let input_file = &args[2];
 
+    println!("{:?}", day);
     if day == "day1" {
-        println!("made it here");
-        let values = utils::parse_file_of_ints("input_data/example_day1.txt");
-        for value in values {
-            println!("{}", value.to_string());
-        }
-        day1::part1();
+        let values = utils::parse_file_of_ints(input_file).unwrap();
+        println!("part 1:  {:?}", day1::part1(values));
     }
-
     
 }
