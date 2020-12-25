@@ -11,7 +11,8 @@ fn main() {
     println!("{:?}", day);
     if day == "day1" {
         let values = utils::parse_file_of_ints(input_file).unwrap();
-        println!("part 1:  {:?}", day1::part1(values));
+        println!("part 1:  {:?}", day1::part1(&values));
+        println!("part 2:  {:?}", day1::part2(&values));
     }
     
 }
