@@ -1,0 +1,64 @@
+use regex::Regex;
+use std::fs;
+
+pub struct PasswordAndPolicy {
+    count_min: usize,
+    count_max: usize,
+    required_char: String,
+    password: String,
+}
+
+impl PasswordAndPolicy {
+    pub fn is_valid_password(&self) -> bool {
+        let occurrence_count = self.password.matches(&self.required_char).count();
+        if occurrence_count >= self.count_min && occurrence_count <= self.count_max {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+pub fn parse_day2_input_file(file_name: &str) -> Result<Vec<PasswordAndPolicy>, std::io::Error> {
+    let contents = fs::read_to_string(file_name)?;
+    let mut values: Vec<PasswordAndPolicy> = Vec::new();
+
+    //17-19 q: qprqdcgrqrqmmhtqqvr
+    let re = Regex::new(r"^(\d+)-(\d+) (\w): (\w+)$").unwrap();
+    for row in contents.split('\n') {
+        if row.is_empty() {
+            continue;
+        }
+
+        let cap = re.captures(row).unwrap();
+        if cap.len() > 1 {
+            let value = PasswordAndPolicy {
+                count_min: cap
+                    .get(1)
+                    .map_or(0, |x| x.as_str().parse::<usize>().unwrap()),
+                count_max: cap
+                    .get(2)
+                    .map_or(0, |x| x.as_str().parse::<usize>().unwrap()),
+                required_char: cap
+                    .get(3)
+                    .map_or(String::from(""), |x| x.as_str().to_string()),
+                password: cap
+                    .get(4)
+                    .map_or(String::from(""), |x| x.as_str().to_string()),
+            };
+            values.push(value);
+        }
+    }
+
+    return Ok(values);
+}
+
+pub fn part1(passwords_and_policies: &Vec<PasswordAndPolicy>) -> u32 {
+    let mut count = 0;
+    for password_and_policy in passwords_and_policies {
+        if password_and_policy.is_valid_password() {
+            count += 1;
+        }
+    }
+    return count;
+}

@@ -1,4 +1,4 @@
-pub fn part1(values: &Vec<i32>) -> i32{
+pub fn part1(values: &Vec<i32>) -> i32 {
     let desired_sum = 2020;
 
     for value1 in values {
@@ -12,8 +12,7 @@ pub fn part1(values: &Vec<i32>) -> i32{
     return 0;
 }
 
-
-pub fn part2(values: &Vec<i32>) -> i32{
+pub fn part2(values: &Vec<i32>) -> i32 {
     let desired_sum = 2020;
 
     for value1 in values {
