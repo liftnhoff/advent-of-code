@@ -4,18 +4,31 @@ use std::fs;
 pub struct PasswordAndPolicy {
     count_min: usize,
     count_max: usize,
-    required_char: String,
+    required_character: String,
     password: String,
 }
 
 impl PasswordAndPolicy {
-    pub fn is_valid_password(&self) -> bool {
-        let occurrence_count = self.password.matches(&self.required_char).count();
+    pub fn is_valid_password_part1(&self) -> bool {
+        let occurrence_count = self.password.matches(&self.required_character).count();
         if occurrence_count >= self.count_min && occurrence_count <= self.count_max {
             return true;
         } else {
             return false;
         }
+    }
+
+    pub fn is_valid_password_part2(&self) -> bool {
+        let mut found_required_char = false;
+        let required_char = self.required_character.chars().next().unwrap();
+        for (index, character) in self.password.chars().enumerate() {
+            if index == self.count_min - 1 || index == self.count_max - 1 {
+                if character == required_char {
+                    found_required_char = !found_required_char;
+                }
+            }
+        }
+        return found_required_char;
     }
 }
 
@@ -39,7 +52,7 @@ pub fn parse_day2_input_file(file_name: &str) -> Result<Vec<PasswordAndPolicy>, 
                 count_max: cap
                     .get(2)
                     .map_or(0, |x| x.as_str().parse::<usize>().unwrap()),
-                required_char: cap
+                required_character: cap
                     .get(3)
                     .map_or(String::from(""), |x| x.as_str().to_string()),
                 password: cap
@@ -56,7 +69,17 @@ pub fn parse_day2_input_file(file_name: &str) -> Result<Vec<PasswordAndPolicy>, 
 pub fn part1(passwords_and_policies: &Vec<PasswordAndPolicy>) -> u32 {
     let mut count = 0;
     for password_and_policy in passwords_and_policies {
-        if password_and_policy.is_valid_password() {
+        if password_and_policy.is_valid_password_part1() {
+            count += 1;
+        }
+    }
+    return count;
+}
+
+pub fn part2(passwords_and_policies: &Vec<PasswordAndPolicy>) -> u32 {
+    let mut count = 0;
+    for password_and_policy in passwords_and_policies {
+        if password_and_policy.is_valid_password_part2() {
             count += 1;
         }
     }
