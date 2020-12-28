@@ -10,11 +10,9 @@ fn main() {
     let day = &args[1];
     let input_file = &args[2];
 
-    println!("{:?}", day);
+    println!("{}", day);
     if day == "day1" {
-        let values = utils::parse_file_of_ints(input_file).unwrap();
-        println!("part 1:  {:?}", day1::part1(&values));
-        println!("part 2:  {:?}", day1::part2(&values));
+        day1::run(input_file);
     } else if day == "day2" {
         let values = day2::parse_day2_input_file(input_file).unwrap();
         println!("part 1:  {:?}", day2::part1(&values));
