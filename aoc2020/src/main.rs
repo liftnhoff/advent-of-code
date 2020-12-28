@@ -1,5 +1,6 @@
 mod day1;
 mod day2;
+mod day3;
 mod utils;
 
 use std::env;
@@ -18,5 +19,7 @@ fn main() {
         let values = day2::parse_day2_input_file(input_file).unwrap();
         println!("part 1:  {:?}", day2::part1(&values));
         println!("part 2:  {:?}", day2::part2(&values));
+    } else if day == "day3" {
+        day3::run(input_file);
     }
 }
