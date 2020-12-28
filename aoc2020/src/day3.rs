@@ -2,17 +2,14 @@ use std::fs;
 
 pub fn run(input_file: &str) {
     let tree_map = parse_day3_input_file(input_file).unwrap();
-    tree_map.print();
-    // println!("part 1:  {:?}", day3::part1(&values));
-    // println!("part 2:  {:?}", day3::part2(&values));
+    // tree_map.print();
+    println!("part 1:  {:?}", part1(tree_map));
+    // println!("part 2:  {:?}", part2(&values));
 }
-
 
 fn parse_day3_input_file(file_name: &str) -> Result<TreeMap, std::io::Error> {
     let contents = fs::read_to_string(file_name)?;
-    let mut tree_map = TreeMap {
-        rows: Vec::new(),
-    };
+    let mut tree_map = TreeMap { rows: Vec::new() };
 
     let tree_marker = '#';
     for row in contents.split('\n') {
@@ -20,9 +17,7 @@ fn parse_day3_input_file(file_name: &str) -> Result<TreeMap, std::io::Error> {
             continue;
         }
 
-        let mut tree_row = TreeRow {
-            cols: Vec::new(), 
-        };
+        let mut tree_row = TreeRow { cols: Vec::new() };
         for character in row.chars() {
             if character == tree_marker {
                 tree_row.cols.push(true);
@@ -36,12 +31,21 @@ fn parse_day3_input_file(file_name: &str) -> Result<TreeMap, std::io::Error> {
     return Ok(tree_map);
 }
 
-// pub fn part1(passwords_and_policies: &Vec<PasswordAndPolicy>) -> u32 {
-    
-// }
+fn part1(tree_map: TreeMap) -> u32 {
+    let steps_right_per_row = 3;
+    let mut tree_count: u32 = 0;
+    let mut col_index = 0;
+    for tree_row in &tree_map.rows {
+        if tree_row.has_tree(col_index) {
+            tree_count += 1;
+        }
+        col_index += steps_right_per_row;
+    }
+    return tree_count;
+}
 
-// pub fn part2(passwords_and_policies: &Vec<PasswordAndPolicy>) -> u32 {
-    
+// fn part2(passwords_and_policies: &Vec<PasswordAndPolicy>) -> u32 {
+
 // }
 
 struct TreeMap {
@@ -71,7 +75,11 @@ impl TreeRow {
     }
 
     fn print(&self) {
-        let line: String = self.cols.iter().map(|&v| if v {"#"} else {"."}).collect();
+        let line: String = self
+            .cols
+            .iter()
+            .map(|&v| if v { "#" } else { "." })
+            .collect();
         println!("{}", line);
     }
 }
