@@ -1,13 +1,13 @@
 use std::fs;
 
 pub fn run(input_file: &str) {
-    let tree_map = parse_day3_input_file(input_file).unwrap();
+    let tree_map = parse_input_file(input_file).unwrap();
     // tree_map.print();
     println!("part 1:  {:?}", part1(&tree_map));
     println!("part 2:  {:?}", part2(&tree_map));
 }
 
-fn parse_day3_input_file(file_name: &str) -> Result<TreeMap, std::io::Error> {
+fn parse_input_file(file_name: &str) -> Result<TreeMap, std::io::Error> {
     let contents = fs::read_to_string(file_name)?;
     let mut tree_map = TreeMap { rows: Vec::new() };
 

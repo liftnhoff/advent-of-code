@@ -1,6 +1,7 @@
 mod day1;
 mod day2;
 mod day3;
+mod day4;
 
 use regex::Regex;
 use std::env;
@@ -24,5 +25,7 @@ fn main() {
         day2::run(input_file);
     } else if day == "day3" {
         day3::run(input_file);
+    } else if day == "day4" {
+        day4::run(input_file);
     }
 }

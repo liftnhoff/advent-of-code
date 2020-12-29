@@ -2,12 +2,12 @@ use regex::Regex;
 use std::fs;
 
 pub fn run(input_file: &str) {
-    let values = parse_day2_input_file(input_file).unwrap();
+    let values = parse_input_file(input_file).unwrap();
     println!("part 1:  {}", part1(&values));
     println!("part 2:  {}", part2(&values));
 }
 
-fn parse_day2_input_file(file_name: &str) -> Result<Vec<PasswordAndPolicy>, std::io::Error> {
+fn parse_input_file(file_name: &str) -> Result<Vec<PasswordAndPolicy>, std::io::Error> {
     let contents = fs::read_to_string(file_name)?;
     let mut values: Vec<PasswordAndPolicy> = Vec::new();
 
