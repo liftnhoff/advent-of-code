@@ -17,8 +17,9 @@ fn parse_day2_input_file(file_name: &str) -> Result<Vec<PasswordAndPolicy>, std:
             continue;
         }
 
-        let cap = re.captures(row).unwrap();
-        if cap.len() > 1 {
+        let cap_result = re.captures(row);
+        if cap_result.is_some() {
+            let cap = cap_result.unwrap();
             let value = PasswordAndPolicy {
                 count_min: cap
                     .get(1)

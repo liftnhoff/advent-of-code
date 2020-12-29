@@ -86,17 +86,17 @@ struct TreeMap {
     rows: Vec<TreeRow>,
 }
 
-impl TreeMap {
-    fn has_tree(&self, row_index: usize, col_index: usize) -> bool {
-        return self.rows.get(row_index).unwrap().has_tree(col_index);
-    }
-
-    fn print(&self) {
-        for tree_row in &self.rows {
-            tree_row.print();
-        }
-    }
-}
+// impl TreeMap {
+//     fn has_tree(&self, row_index: usize, col_index: usize) -> bool {
+//         return self.rows.get(row_index).unwrap().has_tree(col_index);
+//     }
+//
+//     fn print(&self) {
+//         for tree_row in &self.rows {
+//             tree_row.print();
+//         }
+//     }
+// }
 
 struct TreeRow {
     cols: Vec<bool>,
@@ -108,12 +108,12 @@ impl TreeRow {
         return *self.cols.get(index).unwrap_or(&false);
     }
 
-    fn print(&self) {
-        let line: String = self
-            .cols
-            .iter()
-            .map(|&v| if v { "#" } else { "." })
-            .collect();
-        println!("{}", line);
-    }
+    // fn print(&self) {
+    //     let line: String = self
+    //         .cols
+    //         .iter()
+    //         .map(|&v| if v { "#" } else { "." })
+    //         .collect();
+    //     println!("{}", line);
+    // }
 }
