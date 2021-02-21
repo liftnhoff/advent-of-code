@@ -28,5 +28,7 @@ fn main() {
         day3::run(input_file);
     } else if day == "day4" {
         day4::run(input_file);
+    } else if day == "day5" {
+        day5::run(input_file);
     }
 }
