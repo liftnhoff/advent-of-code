@@ -3,8 +3,6 @@ import importlib
 import os
 import sys
 
-sys.path.append(os.path.dirname(os.path.realpath(__file__)))
-
 
 def main():
     parser = argparse.ArgumentParser()
@@ -17,10 +15,18 @@ def main():
     )
     args = parser.parse_args()
 
+    # Do some slightly exotic dynamic importing depending on the day whose solution we
+    # want to run.
+    try:
+        solution_module = importlib.import_module(f"day{args.day_number}.solution")
+    except ModuleNotFoundError:
+        print(f"No solution was found for day {args.day_number}.")
+        sys.exit(1)
 
-    solution_module = importlib.import_module(f"day{args.day_number}.solution")
-    s = solution_module.Solution()
-    s.run()
+    input_file = os.path.join(f"day{args.day_number}", "input.txt")
+    solution = solution_module.Solution(input_file)
+    solution.run()
+    print(solution.input_data)
 
 
 if __name__ == "__main__":
