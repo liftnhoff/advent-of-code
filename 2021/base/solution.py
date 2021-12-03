@@ -10,8 +10,8 @@ class AdventOfCodeSolutionBase(abc.ABC):
 
     def run(self):
         self._load_input_data()
-        self.part1()
-        self.part2()
+        print(f"part 1: {self.part1()}")
+        print(f"part 2: {self.part2()}")
 
     def _load_input_data(self):
         input_file_path = os.path.join(self.input_file)
@@ -27,8 +27,10 @@ class AdventOfCodeSolutionBase(abc.ABC):
 
     @abc.abstractmethod
     def part1(self):
+        """Calculate and return the answer to part 1."""
         pass
 
     @abc.abstractmethod
     def part2(self):
+        """Calculate and return the answer to part 2."""
         pass

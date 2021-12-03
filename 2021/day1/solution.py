@@ -11,7 +11,7 @@ class Solution(AdventOfCodeSolutionBase):
             if self.input_data[index] > self.input_data[index - 1]:
                 step_increase_count += 1
 
-        print(f"part 1: {step_increase_count}")
+        return step_increase_count
 
     def part2(self):
         window_increase_count = 0
@@ -21,4 +21,4 @@ class Solution(AdventOfCodeSolutionBase):
             if next_window_sum > current_window_sum:
                 window_increase_count += 1
 
-        print(f"part 2: {window_increase_count}")
+        return window_increase_count
