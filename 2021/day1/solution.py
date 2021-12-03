@@ -1,7 +1,7 @@
-from base.solution import AdventOfCodeSolution
+from base.solution import AdventOfCodeSolutionBase
 
 
-class Solution(AdventOfCodeSolution):
+class Solution(AdventOfCodeSolutionBase):
     def part1(self):
         step_increase_count = 0
         current = int(self.input_data[0])

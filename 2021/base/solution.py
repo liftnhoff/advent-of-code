@@ -2,7 +2,7 @@ import abc
 import os
 
 
-class AdventOfCodeSolution(abc.ABC):
+class AdventOfCodeSolutionBase(abc.ABC):
     def __init__(self, input_file: str):
         self.input_file = input_file
         self.input_data = []
