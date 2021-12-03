@@ -25,10 +25,10 @@ def _make_solution_directory(day_number: int) -> None:
 
     os.mkdir(day_dir)
 
-    open(os.path.join(day_dir, "__init__.py"), 'a').close()
-    open(os.path.join(day_dir, "solution.py"), 'a').close()
-    open(os.path.join(day_dir, "test_input.txt"), 'a').close()
-    open(os.path.join(day_dir, "input.txt"), 'a').close()
+    open(os.path.join(day_dir, "__init__.py"), "a").close()
+    open(os.path.join(day_dir, "solution.py"), "a").close()
+    open(os.path.join(day_dir, "test_input.txt"), "a").close()
+    open(os.path.join(day_dir, "input.txt"), "a").close()
 
     print(f"Created solution directory {day_dir}")
 
