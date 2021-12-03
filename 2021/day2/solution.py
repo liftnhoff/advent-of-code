@@ -56,4 +56,16 @@ class Solution(AdventOfCodeSolutionBase):
         return x_pos * depth
 
     def part2(self):
-        return
+        x_pos = 0
+        depth = 0
+        aim = 0
+        for cmd in self.input_data:
+            if cmd.direction is Direction.UP:
+                aim -= cmd.amount
+            elif cmd.direction is Direction.DOWN:
+                aim += cmd.amount
+            elif cmd.direction is Direction.FORWARD:
+                x_pos += cmd.amount
+                depth += aim * cmd.amount
+
+        return x_pos * depth
