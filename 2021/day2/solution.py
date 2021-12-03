@@ -23,6 +23,7 @@ class Direction(enum.Enum):
 
         return direction
 
+
 @dataclasses.dataclass
 class DirectionCommand:
     direction: Direction
@@ -42,8 +43,17 @@ class Solution(AdventOfCodeSolutionBase):
         return parser
 
     def part1(self):
-        print(self.input_data)
-        return
+        x_pos = 0
+        depth = 0
+        for cmd in self.input_data:
+            if cmd.direction is Direction.UP:
+                depth -= cmd.amount
+            elif cmd.direction is Direction.DOWN:
+                depth += cmd.amount
+            elif cmd.direction is Direction.FORWARD:
+                x_pos += cmd.amount
+
+        return x_pos * depth
 
     def part2(self):
         return
