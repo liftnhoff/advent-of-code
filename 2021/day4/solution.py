@@ -15,8 +15,6 @@ class BingoBoard:
         frozenset({2, 7, 12, 17, 22}),
         frozenset({3, 8, 13, 18, 23}),
         frozenset({4, 9, 14, 19, 24}),
-        frozenset({0, 6, 12, 18, 24}),  # diagonals
-        frozenset({4, 8, 12, 16, 20}),
     )
 
     def __init__(self, board_values: Union[list[int], tuple[int]]):
@@ -52,6 +50,14 @@ class BingoBoard:
 
         return False
 
+    def get_unmarked_numbers(self) -> list[int]:
+        unmarked_numbers = []
+        for index, number in enumerate(self.board_values):
+            if index not in self.seen_indexes:
+                unmarked_numbers.append(number)
+
+        return unmarked_numbers
+
 
 class Solution(AdventOfCodeSolutionBase):
     def data_parser(self):
@@ -59,10 +65,12 @@ class Solution(AdventOfCodeSolutionBase):
 
     def part1(self):
         numbers, bingo_boards = self._prepare_bingo()
-        print(numbers)
-        for b in bingo_boards:
-            print(b)
-        return None
+        for number in numbers:
+            for board in bingo_boards:
+                if board.maybe_add_number_and_check_bingo(number):
+                    return number * sum(board.get_unmarked_numbers())
+
+        return "No winning board was found."
 
     def _prepare_bingo(self) -> tuple[tuple[int], list[BingoBoard]]:
         numbers = tuple(int(x) for x in self.input_data[0].split(","))
