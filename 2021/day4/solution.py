@@ -24,8 +24,11 @@ class BingoBoard:
         self.seen_indexes = set()
 
     def __repr__(self):
+        return f"BingoBoard ({''.join(str(x) for x in self.board_values)})"
+
+    def __str__(self):
         output_rows = [
-            "BingoBoard",
+            self.__repr__(),
             "".join(f"{x: 4d}" for x in self.board_values[0:5]),
             "".join(f"{x: 4d}" for x in self.board_values[5:10]),
             "".join(f"{x: 4d}" for x in self.board_values[10:15]),
@@ -90,4 +93,20 @@ class Solution(AdventOfCodeSolutionBase):
         return numbers, bingo_boards
 
     def part2(self):
-        return None
+        numbers, bingo_boards = self._prepare_bingo()
+
+        last_winning_number = None
+        last_winning_board = None
+        for number in numbers:
+            losing_bingo_boards = []
+
+            for board in bingo_boards:
+                if board.maybe_add_number_and_check_bingo(number):
+                    last_winning_number = number
+                    last_winning_board = board
+                else:
+                    losing_bingo_boards.append(board)
+
+            bingo_boards = losing_bingo_boards
+
+        return last_winning_number * sum(last_winning_board.get_unmarked_numbers())
