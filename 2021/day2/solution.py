@@ -1,6 +1,6 @@
-import dataclasses
 import enum
 import re
+from dataclasses import dataclass
 
 from base.solution import AdventOfCodeSolutionBase
 
@@ -24,7 +24,7 @@ class Direction(enum.Enum):
         return direction
 
 
-@dataclasses.dataclass
+@dataclass
 class DirectionCommand:
     direction: Direction
     amount: int
