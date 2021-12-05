@@ -8,8 +8,8 @@ from base.solution import AdventOfCodeSolutionBase
 class BinnedBits:
     zero_count: int
     one_count: int
-    values_with_zero_in_index: list[str]
-    values_with_one_in_index: list[str]
+    values_with_zero_at_index: list[str]
+    values_with_one_at_index: list[str]
 
 
 class Solution(AdventOfCodeSolutionBase):
@@ -41,9 +41,9 @@ class Solution(AdventOfCodeSolutionBase):
         for index in range(len(self.input_data[0])):
             binned_bits = self._bin_bits(current_values, index)
             if binned_bits.zero_count > binned_bits.one_count:
-                current_values = binned_bits.values_with_zero_in_index
+                current_values = binned_bits.values_with_zero_at_index
             else:
-                current_values = binned_bits.values_with_one_in_index
+                current_values = binned_bits.values_with_one_at_index
 
             if len(current_values) <= 1:
                 break
@@ -55,10 +55,10 @@ class Solution(AdventOfCodeSolutionBase):
         for value in bits_list:
             if value[index] == "0":
                 binned_bits.zero_count += 1
-                binned_bits.values_with_zero_in_index.append(value)
+                binned_bits.values_with_zero_at_index.append(value)
             else:
                 binned_bits.one_count += 1
-                binned_bits.values_with_one_in_index.append(value)
+                binned_bits.values_with_one_at_index.append(value)
 
         return binned_bits
 
@@ -67,9 +67,9 @@ class Solution(AdventOfCodeSolutionBase):
         for index in range(len(self.input_data[0])):
             binned_bits = self._bin_bits(current_values, index)
             if binned_bits.zero_count <= binned_bits.one_count:
-                current_values = binned_bits.values_with_zero_in_index
+                current_values = binned_bits.values_with_zero_at_index
             else:
-                current_values = binned_bits.values_with_one_in_index
+                current_values = binned_bits.values_with_one_at_index
 
             if len(current_values) <= 1:
                 break
