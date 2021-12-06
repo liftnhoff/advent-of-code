@@ -14,12 +14,32 @@ class VentLine:
 
 class VentMap:
     def __init__(self, max_x: int, max_y: int):
-        self.max_x = max_x
-        self.max_y = max_y
-        self.grid = [[0] * max_x for _ in range(max_y)]
+        self.grid = [[0] * (max_x + 1) for _ in range(max_y + 1)]
+
+    def __str__(self):
+        grid_values = ["VentMap"]
+        for row in self.grid:
+            grid_values.append("".join(f"{v: 3d}" for v in row))
+
+        return "\n".join(grid_values)
 
     def add_vent(self, vent_line: VentLine):
-        pass
+        if vent_line.x1 == vent_line.x2:
+            self._add_vertical_vent(vent_line)
+        elif vent_line.y1 == vent_line.y2:
+            self._add_horizontal_vent(vent_line)
+        else:
+            pass  # Skip diagonal lines.
+
+    def _add_vertical_vent(self, vent_line):
+        y_values = sorted([vent_line.y1, vent_line.y2])
+        for y_value in range(y_values[0], y_values[1] + 1):
+            self.grid[y_value][vent_line.x1] += 1
+
+    def _add_horizontal_vent(self, vent_line):
+        x_values = sorted([vent_line.x1, vent_line.x2])
+        for x_value in range(x_values[0], x_values[1] + 1):
+            self.grid[vent_line.y1][x_value] += 1
 
 
 class Solution(AdventOfCodeSolutionBase):
@@ -37,8 +57,8 @@ class Solution(AdventOfCodeSolutionBase):
 
     def part1(self):
         vent_map = self._initialize_map()
-        for row in vent_map.grid:
-            print(row)
+        for vent_line in self.input_data:
+            vent_map.add_vent(vent_line)
         return None
 
     def _initialize_map(self) -> VentMap:
