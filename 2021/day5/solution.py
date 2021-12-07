@@ -23,22 +23,40 @@ class VentMap:
 
         return "\n".join(grid_values)
 
-    def add_vent(self, vent_line: VentLine):
+    def add_vent(self, vent_line: VentLine, include_diagonal: bool = False):
         if vent_line.x1 == vent_line.x2:
             self._add_vertical_vent(vent_line)
         elif vent_line.y1 == vent_line.y2:
             self._add_horizontal_vent(vent_line)
-        # Skip diagonal lines.
+        else:
+            if include_diagonal:
+                self._add_diagonal_vent(vent_line)
 
-    def _add_vertical_vent(self, vent_line):
-        y_values = sorted([vent_line.y1, vent_line.y2])
-        for y_value in range(y_values[0], y_values[1] + 1):
+    def _add_vertical_vent(self, vent_line: VentLine):
+        y_indexes = sorted([vent_line.y1, vent_line.y2])
+        for y_value in range(y_indexes[0], y_indexes[1] + 1):
             self.grid[y_value][vent_line.x1] += 1
 
-    def _add_horizontal_vent(self, vent_line):
-        x_values = sorted([vent_line.x1, vent_line.x2])
-        for x_value in range(x_values[0], x_values[1] + 1):
+    def _add_horizontal_vent(self, vent_line: VentLine):
+        x_indexes = sorted([vent_line.x1, vent_line.x2])
+        for x_value in range(x_indexes[0], x_indexes[1] + 1):
             self.grid[vent_line.y1][x_value] += 1
+
+    def _add_diagonal_vent(self, vent_line: VentLine):
+        # Always start the line at the top-most point.
+        points = sorted(
+            [(vent_line.x1, vent_line.y1), (vent_line.x2, vent_line.y2)],
+            key=lambda v: v[1],
+        )
+        x_index = points[0][0]
+        y_index = points[0][1]
+        while y_index <= points[1][1]:
+            self.grid[y_index][x_index] += 1
+            y_index += 1
+            if points[0][0] < points[1][0]:
+                x_index += 1  # Diagonal from top left to bottom right.
+            else:
+                x_index -= 1  # Diagonal from top right to bottom left.
 
     def count_points_with_multiple_vents(self) -> int:
         count = 0
@@ -89,4 +107,8 @@ class Solution(AdventOfCodeSolutionBase):
         return VentMap(x_length, y_length)
 
     def part2(self):
-        return None
+        vent_map = self._initialize_empty_map()
+        for vent_line in self.input_data:
+            vent_map.add_vent(vent_line, include_diagonal=True)
+
+        return vent_map.count_points_with_multiple_vents()
