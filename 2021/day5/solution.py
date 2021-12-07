@@ -13,8 +13,8 @@ class VentLine:
 
 
 class VentMap:
-    def __init__(self, max_x: int, max_y: int):
-        self.grid = [[0] * (max_x + 1) for _ in range(max_y + 1)]
+    def __init__(self, x_length: int, y_length: int):
+        self.grid = [[0] * x_length for _ in range(y_length)]
 
     def __str__(self):
         grid_values = ["VentMap"]
@@ -84,7 +84,9 @@ class Solution(AdventOfCodeSolutionBase):
             if vent_line.y2 > max_y:
                 max_y = vent_line.y2
 
-        return VentMap(max_x, max_y)
+        x_length = max_x + 1
+        y_length = max_y + 1
+        return VentMap(x_length, y_length)
 
     def part2(self):
         return None
