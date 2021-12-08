@@ -52,4 +52,47 @@ class Solution(AdventOfCodeSolutionBase):
         return fish_school.count()
 
     def part2(self):
-        return None
+        fish_school = AggregatedLanternFishSchool(self.input_data[0])
+        for _ in range(256):
+            fish_school.update_fish_timers()
+
+        return fish_school.count()
+
+
+class AggregatedLanternFishSchool:
+    """
+    Note this works for part 1 as well. It is about 5000x faster for 80 days and won't
+    run out of memory for high day values.
+    """
+
+    _OFFSPRING_TIMER_START = 6
+    _NEW_FISH_OFFSPRING_DELAY = 2
+
+    def __init__(self, offspring_timers: list[int]):
+        self.timer_counts = self._get_empty_timer_counts()
+        for timer_value in offspring_timers:
+            self.timer_counts[timer_value] += 1
+
+    def _get_empty_timer_counts(self) -> dict[int, int]:
+        return {
+            t: 0
+            for t in range(
+                self._OFFSPRING_TIMER_START + self._NEW_FISH_OFFSPRING_DELAY + 1
+            )
+        }
+
+    def update_fish_timers(self):
+        new_timer_counts = self._get_empty_timer_counts()
+        for timer_value, count in self.timer_counts.items():
+            new_timer_counts[timer_value - 1] = count
+
+        spawn_count = new_timer_counts.pop(-1, 0)
+        new_timer_counts[self._OFFSPRING_TIMER_START] += spawn_count
+        new_timer_counts[
+            self._OFFSPRING_TIMER_START + self._NEW_FISH_OFFSPRING_DELAY
+        ] += spawn_count
+
+        self.timer_counts = new_timer_counts
+
+    def count(self) -> int:
+        return sum(self.timer_counts.values())
