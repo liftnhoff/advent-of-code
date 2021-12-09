@@ -13,7 +13,7 @@ class CrabSwarm(abc.ABC):
         pass
 
 
-class ConstantCrabSwarm(CrabSwarm):
+class ConstantCostCrabSwarm(CrabSwarm):
     def calculate_cheapest_alignment_cost(self) -> int:
         median_position = int(statistics.median(self.starting_positions))
         cost = 0
@@ -23,8 +23,11 @@ class ConstantCrabSwarm(CrabSwarm):
         return cost
 
 
-class LinearCrabSwarm(CrabSwarm):
+class LinearCostCrabSwarm(CrabSwarm):
     def calculate_cheapest_alignment_cost(self) -> int:
+        # Guess the cheapest position at the median. Check the position to the right
+        # and left to see if there is a cheaper position. Continue in that direction
+        # until we find the minimum cost position.
         median_position = int(statistics.median(self.starting_positions))
         median_cost = self._calculate_cost_for_position(median_position)
         median_right_position = median_position + 1
@@ -33,33 +36,13 @@ class LinearCrabSwarm(CrabSwarm):
         median_left_cost = self._calculate_cost_for_position(median_left_position)
 
         if median_right_cost < median_cost:
-            last_position = median_right_position
-            last_cost = median_right_cost
-            while True:
-                position = last_position + 1
-                cost = self._calculate_cost_for_position(position)
-
-                if cost > last_cost:
-                    cost = last_cost
-                    break
-                else:
-                    last_position = position
-                    last_cost = cost
-
+            cost = self._search_for_minimum_cost(
+                median_right_position, median_right_cost, 1
+            )
         elif median_left_cost < median_cost:
-            last_position = median_left_position
-            last_cost = median_left_cost
-            while True:
-                position = last_position - 1
-                cost = self._calculate_cost_for_position(position)
-
-                if cost > last_cost:
-                    cost = last_cost
-                    break
-                else:
-                    last_position = position
-                    last_cost = cost
-
+            cost = self._search_for_minimum_cost(
+                median_left_position, median_left_cost, -1
+            )
         else:
             cost = median_cost
 
@@ -69,10 +52,31 @@ class LinearCrabSwarm(CrabSwarm):
         cost = 0
         for crab_position in self.starting_positions:
             distance = abs(position - crab_position)
-            # Use the n*(n+1)/2 formula for the sum of 1 to n.
-            cost += distance * (distance + 1) / 2
+            cost += sum_one_to_n(distance)
 
         return int(cost)
+
+    def _search_for_minimum_cost(
+        self, starting_position: int, starting_cost: int, direction_shift: int
+    ) -> int:
+        last_position = starting_position
+        last_cost = starting_cost
+        while True:
+            position = last_position + direction_shift
+            cost = self._calculate_cost_for_position(position)
+
+            if cost > last_cost:
+                cost = last_cost
+                break
+            else:
+                last_position = position
+                last_cost = cost
+
+        return cost
+
+
+def sum_one_to_n(n):
+    return n * (n + 1) / 2
 
 
 class Solution(AdventOfCodeSolutionBase):
@@ -80,9 +84,9 @@ class Solution(AdventOfCodeSolutionBase):
         return lambda x: [int(v) for v in x.split(",") if x]
 
     def part1(self):
-        crab_swarm = ConstantCrabSwarm(self.input_data[0])
+        crab_swarm = ConstantCostCrabSwarm(self.input_data[0])
         return crab_swarm.calculate_cheapest_alignment_cost()
 
     def part2(self):
-        crab_swarm = LinearCrabSwarm(self.input_data[0])
+        crab_swarm = LinearCostCrabSwarm(self.input_data[0])
         return crab_swarm.calculate_cheapest_alignment_cost()
