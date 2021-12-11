@@ -219,6 +219,7 @@ class Solution(AdventOfCodeSolutionBase):
             for output_value in display_info.output_values:
                 digits.append(mapper.identify_number(output_value))
 
-            total += digits[0] * 1000 + digits[1] * 100 + digits[2] * 10 + digits[1]
+            number = digits[0] * 1000 + digits[1] * 100 + digits[2] * 10 + digits[3]
+            total += number
 
         return total
