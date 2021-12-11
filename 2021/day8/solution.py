@@ -36,13 +36,14 @@ class SegmentMapper:
 
     def __init__(self, input_signals: list[str]):
         self.input_signals = input_signals
-        self.canonical_by_current = {}
-        self.current_by_canonical = {}
-        self.segment_group_by_number = {}
-        self.segment_groups_by_length = defaultdict(list)
+
+        self.canonical_by_current: dict[str, str] = {}
+        self.current_by_canonical: dict[str, str] = {}
+        self.segment_group_by_number: dict[int, set[str]] = {}
+        self.segment_groups_by_length: dict[int, set[str]] = defaultdict(list)
 
     def identify_number(self, segment_group: set[str]) -> int:
-        self._map_input_to_standard_segments()
+        self._map_to_standard_segments_if_needed()
 
         mapped_set = set()
         for segment in segment_group:
@@ -50,7 +51,7 @@ class SegmentMapper:
 
         return self.NUMBERS_BY_SEGMENT_GROUP["".join(sorted(mapped_set))]
 
-    def _map_input_to_standard_segments(self):
+    def _map_to_standard_segments_if_needed(self):
         if self.canonical_by_current:
             return
 
@@ -211,9 +212,13 @@ class Solution(AdventOfCodeSolutionBase):
         return unique_counts_total
 
     def part2(self):
+        total = 0
         for display_info in self.input_data:
             mapper = SegmentMapper(display_info.input_signals)
-            for output_value in display_info.input_signals:
-                print("".join(output_value), mapper.identify_number(output_value))
-            break
-        return None
+            digits = []
+            for output_value in display_info.output_values:
+                digits.append(mapper.identify_number(output_value))
+
+            total += digits[0] * 1000 + digits[1] * 100 + digits[2] * 10 + digits[1]
+
+        return total
