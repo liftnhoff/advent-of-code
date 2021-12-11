@@ -6,8 +6,8 @@ from base.solution import AdventOfCodeSolutionBase
 
 @dataclass
 class DisplayInfo:
-    input_signals: list[set[str]]
-    output_values: list[set[str]]
+    unique_segment_groups: list[set[str]]
+    output_segment_groups: list[set[str]]
 
 
 class SegmentMapper:
@@ -34,13 +34,13 @@ class SegmentMapper:
         "abcdfg": 9,
     }
 
-    def __init__(self, input_signals: list[str]):
-        self.input_signals = input_signals
+    def __init__(self, unique_segment_groups: list[str]):
+        self.unique_segment_groups = unique_segment_groups
 
         self.canonical_by_current: dict[str, str] = {}
         self.current_by_canonical: dict[str, str] = {}
         self.segment_group_by_number: dict[int, set[str]] = {}
-        self.segment_groups_by_length: dict[int, set[str]] = defaultdict(list)
+        self.segment_groups_by_length: dict[int, list[set[str]]] = defaultdict(list)
 
     def identify_number(self, segment_group: set[str]) -> int:
         self._map_to_standard_segments_if_needed()
@@ -69,8 +69,8 @@ class SegmentMapper:
         self._get_mapping_for_e()
 
     def _initialize_known_values(self):
-        for segments in self.input_signals:
-            self.segment_groups_by_length[len(segments)].append(segments)
+        for segment_group in self.unique_segment_groups:
+            self.segment_groups_by_length[len(segment_group)].append(segment_group)
 
         self.segment_group_by_number[1] = self.segment_groups_by_length[2][0]
         self.segment_group_by_number[4] = self.segment_groups_by_length[4][0]
@@ -192,10 +192,10 @@ class SegmentMapper:
 class Solution(AdventOfCodeSolutionBase):
     def data_parser(self):
         def parser(line):
-            input_signals, output_values = line.split("|")
+            unique_segment_groups, output_segment_groups = line.split("|")
             return DisplayInfo(
-                [set(segments) for segments in input_signals.split()],
-                [set(segments) for segments in output_values.split()],
+                [set(segments) for segments in unique_segment_groups.split()],
+                [set(segments) for segments in output_segment_groups.split()],
             )
 
         return parser
@@ -205,8 +205,8 @@ class Solution(AdventOfCodeSolutionBase):
 
         unique_counts_total = 0
         for display_info in self.input_data:
-            for output_value in display_info.output_values:
-                if len(output_value) in unique_segment_counts_set:
+            for segment_group in display_info.output_segment_groups:
+                if len(segment_group) in unique_segment_counts_set:
                     unique_counts_total += 1
 
         return unique_counts_total
@@ -214,10 +214,10 @@ class Solution(AdventOfCodeSolutionBase):
     def part2(self):
         total = 0
         for display_info in self.input_data:
-            mapper = SegmentMapper(display_info.input_signals)
+            mapper = SegmentMapper(display_info.unique_segment_groups)
             digits = []
-            for output_value in display_info.output_values:
-                digits.append(mapper.identify_number(output_value))
+            for segment_group in display_info.output_segment_groups:
+                digits.append(mapper.identify_number(segment_group))
 
             number = digits[0] * 1000 + digits[1] * 100 + digits[2] * 10 + digits[3]
             total += number
