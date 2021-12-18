@@ -1,13 +1,27 @@
 from dataclasses import dataclass
-from typing import Union
+from typing import Generic, TypeVar, Union
 
 from base.solution import AdventOfCodeSolutionBase
 
+PointType = TypeVar("PointType")
+
 
 @dataclass
-class Point:
+class Point(Generic[PointType]):
     row_index: int
     col_index: int
+
+    def up(self) -> PointType:
+        return Point(self.row_index - 1, self.col_index)
+
+    def down(self) -> PointType:
+        return Point(self.row_index + 1, self.col_index)
+
+    def left(self) -> PointType:
+        return Point(self.row_index, self.col_index - 1)
+
+    def right(self) -> PointType:
+        return Point(self.row_index, self.col_index + 1)
 
 
 class HeightMap:
@@ -21,9 +35,7 @@ class HeightMap:
     def calculate_risk_level(self) -> int:
         risk = 0
         for point in self.local_minima:
-            risk += self._RISK_CONSTANT + self.get_height(
-                point.row_index, point.col_index
-            )
+            risk += self._RISK_CONSTANT + self.get_height(point)
 
         return risk
 
@@ -34,30 +46,31 @@ class HeightMap:
 
         for row_index, row in enumerate(self._heights):
             for col_index in range(len(row)):
-                if self._is_point_local_minimum(row_index, col_index):
-                    self._local_minima.append(Point(row_index, col_index))
+                point = Point(row_index, col_index)
+                if self._is_point_local_minimum(point):
+                    self._local_minima.append(point)
 
         return self._local_minima
 
-    def _is_point_local_minimum(self, row_index: int, col_index: int) -> bool:
-        up = self.get_height(row_index - 1, col_index)
-        down = self.get_height(row_index + 1, col_index)
-        left = self.get_height(row_index, col_index - 1)
-        right = self.get_height(row_index, col_index + 1)
-        height = self.get_height(row_index, col_index)
+    def _is_point_local_minimum(self, point: PointType) -> bool:
+        up = self.get_height(point.up())
+        down = self.get_height(point.down())
+        left = self.get_height(point.left())
+        right = self.get_height(point.right())
+        height = self.get_height(point)
 
         return height < up and height < down and height < left and height < right
 
-    def get_height(self, row_index, col_index) -> Union[int, float]:
+    def get_height(self, point: PointType) -> Union[int, float]:
         if (
-            row_index < 0
-            or row_index >= len(self._heights)
-            or col_index < 0
-            or col_index >= len(self._heights[0])
+            point.row_index < 0
+            or point.row_index >= len(self._heights)
+            or point.col_index < 0
+            or point.col_index >= len(self._heights[0])
         ):
             return float("inf")
         else:
-            return self._heights[row_index][col_index]
+            return self._heights[point.row_index][point.col_index]
 
 
 class Solution(AdventOfCodeSolutionBase):
