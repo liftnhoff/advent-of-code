@@ -49,13 +49,15 @@ class HeightMap:
         return height < up and height < down and height < left and height < right
 
     def get_height(self, row_index, col_index) -> Union[int, float]:
-        if row_index < 0 or col_index < 0:
+        if (
+            row_index < 0
+            or row_index >= len(self._heights)
+            or col_index < 0
+            or col_index >= len(self._heights[0])
+        ):
             return float("inf")
-
-        try:
+        else:
             return self._heights[row_index][col_index]
-        except IndexError:
-            return float("inf")
 
 
 class Solution(AdventOfCodeSolutionBase):
