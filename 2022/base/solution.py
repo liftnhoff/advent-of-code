@@ -1,6 +1,6 @@
 import abc
 import os
-from typing import Callable
+from typing import Any, Callable
 
 
 class AdventOfCodeSolutionBase(abc.ABC):
@@ -27,11 +27,11 @@ class AdventOfCodeSolutionBase(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def part1(self):
+    def part1(self) -> Any:
         """Calculate and return the answer to part 1."""
         pass
 
     @abc.abstractmethod
-    def part2(self):
+    def part2(self) -> Any:
         """Calculate and return the answer to part 2."""
         pass

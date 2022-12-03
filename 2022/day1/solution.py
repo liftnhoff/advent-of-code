@@ -5,7 +5,11 @@ class Solution(AdventOfCodeSolutionBase):
     def data_parser(self):
         return lambda x: int(x) if x else None
 
-    def part1(self):
+    def part1(self) -> int:
+        return max(self._calorie_counts)
+
+    @property
+    def _calorie_counts(self) -> list[int]:
         calorie_counts = []
         current_pack = []
         for calories in self.input_data:
@@ -17,7 +21,7 @@ class Solution(AdventOfCodeSolutionBase):
 
         calorie_counts.append(sum(current_pack))
 
-        return max(calorie_counts)
+        return calorie_counts
 
-    def part2(self):
-        return None
+    def part2(self) -> int:
+        return sum(sorted(self._calorie_counts, reverse=True)[:3])
