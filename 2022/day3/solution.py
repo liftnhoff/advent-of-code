@@ -22,8 +22,9 @@ class Rucksack:
     def items_in_both_compartments(self) -> set[str]:
         return set(self.first_compartment).intersection(set(self.second_compartment))
 
-    def item_priority(self, item_letter: str) -> int:
-        return self._PRIORITY_LOOKUP[item_letter]
+    @classmethod
+    def item_priority(cls, item_letter: str) -> int:
+        return cls._PRIORITY_LOOKUP[item_letter]
 
 
 class Solution(AdventOfCodeSolutionBase):
@@ -33,10 +34,25 @@ class Solution(AdventOfCodeSolutionBase):
     def part1(self):
         priority_total = 0
         for rucksack in self.input_data:
-            priority_total += rucksack.item_priority(
+            priority_total += Rucksack.item_priority(
                 rucksack.items_in_both_compartments().pop()
             )
         return priority_total
 
     def part2(self):
-        return None
+        priority_total = 0
+        elf_count = 3
+        current_set = None
+        for index, rucksack in enumerate(self.input_data):
+            if index % elf_count == 0 and current_set:
+                priority_total += Rucksack.item_priority(current_set.pop())
+                current_set = None
+
+            if current_set is None:
+                current_set = set(rucksack.contents)
+            else:
+                current_set = current_set.intersection(rucksack.contents)
+
+        priority_total += Rucksack.item_priority(current_set.pop())
+
+        return priority_total
