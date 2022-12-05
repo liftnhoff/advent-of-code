@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import subprocess
 import sys
 
 
@@ -40,6 +41,8 @@ def _make_solution_directory(day_number: int) -> None:
     if not os.path.isfile(solution_file):
         with open(solution_file, "w") as fid:
             fid.write(_SOLUTION_TEMPLATE)
+
+    subprocess.run(["git", "add", day_dir], check=True)
 
     print(f"Created solution directory {day_dir}")
 
