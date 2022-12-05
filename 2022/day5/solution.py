@@ -73,8 +73,21 @@ class Solution(AdventOfCodeSolutionBase):
                         int(match.group(3)),
                     )
                 )
-        print(instructions)
         return instructions
 
     def part2(self):
-        return None
+        stacks = self._build_crate_stacks()
+        instructions = self._get_instructions()
+        for instruction in instructions:
+            selected_crates = []
+            for _ in range(instruction.crate_count):
+                selected_crates.append(stacks[instruction.source_bin].pop())
+
+            for _ in range(instruction.crate_count):
+                stacks[instruction.destination_bin].append(selected_crates.pop())
+
+        top_crates = []
+        for stack in stacks.values():
+            top_crates.append(stack[-1])
+
+        return "".join(top_crates)
