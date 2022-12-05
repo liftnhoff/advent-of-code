@@ -25,11 +25,20 @@ class Solution(AdventOfCodeSolutionBase):
     def data_parser(self):
         return lambda x: x
 
-    def part1(self):
-        # stacks = self._build_crate_stacks()
-        # instructions = self._get_instructions()
+    def part1(self) -> str:
+        stacks = self._build_crate_stacks()
+        instructions = self._get_instructions()
+        for instruction in instructions:
+            for _ in range(instruction.crate_count):
+                stacks[instruction.destination_bin].append(
+                    stacks[instruction.source_bin].pop()
+                )
 
-        return None
+        top_crates = []
+        for stack in stacks.values():
+            top_crates.append(stack[-1])
+
+        return "".join(top_crates)
 
     def _build_crate_stacks(self) -> dict[int, list[str]]:
         pattern = re.compile(r"^ 1")
