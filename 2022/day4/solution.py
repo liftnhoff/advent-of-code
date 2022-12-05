@@ -33,4 +33,11 @@ class Solution(AdventOfCodeSolutionBase):
         return contained_pairs
 
     def part2(self):
-        return None
+        overlap_pairs = 0
+        for r1, r2 in self.input_data:
+            r1_set = set(range(r1.start, r1.end + 1))
+            r2_set = set(range(r2.start, r2.end + 1))
+            if r1_set.intersection(r2_set):
+                overlap_pairs += 1
+
+        return overlap_pairs
