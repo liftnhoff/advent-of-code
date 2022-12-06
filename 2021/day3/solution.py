@@ -1,5 +1,6 @@
 from collections import Counter, defaultdict
 from dataclasses import dataclass
+from typing import List
 
 from base.solution import AdventOfCodeSolutionBase
 
@@ -8,8 +9,8 @@ from base.solution import AdventOfCodeSolutionBase
 class BinnedBits:
     zero_count: int
     one_count: int
-    values_with_zero_at_index: list[str]
-    values_with_one_at_index: list[str]
+    values_with_zero_at_index: List[str]
+    values_with_one_at_index: List[str]
 
 
 class Solution(AdventOfCodeSolutionBase):
@@ -50,7 +51,7 @@ class Solution(AdventOfCodeSolutionBase):
 
         return int(current_values[0], 2)
 
-    def _bin_bits(self, bits_list: list[str], index: int) -> BinnedBits:
+    def _bin_bits(self, bits_list: List[str], index: int) -> BinnedBits:
         binned_bits = BinnedBits(0, 0, [], [])
         for value in bits_list:
             if value[index] == "0":

@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List, Tuple
 
 from base.solution import AdventOfCodeSolutionBase
 
@@ -17,7 +17,7 @@ class BingoBoard:
         frozenset({4, 9, 14, 19, 24}),
     )
 
-    def __init__(self, board_values: Union[list[int], tuple[int]]):
+    def __init__(self, board_values: Union[List[int], Tuple[int]]):
         if len(board_values) != 25:
             raise ValueError("A BingoBoard requires 25 values.")
         self.board_values = tuple(board_values)
@@ -53,7 +53,7 @@ class BingoBoard:
 
         return False
 
-    def get_unmarked_numbers(self) -> list[int]:
+    def get_unmarked_numbers(self) -> List[int]:
         unmarked_numbers = []
         for index, number in enumerate(self.board_values):
             if index not in self.seen_indexes:
@@ -75,7 +75,7 @@ class Solution(AdventOfCodeSolutionBase):
 
         return "No winning board was found."
 
-    def _prepare_bingo(self) -> tuple[tuple[int], list[BingoBoard]]:
+    def _prepare_bingo(self) -> Tuple[Tuple[int], List[BingoBoard]]:
         numbers = tuple(int(x) for x in self.input_data[0].split(","))
 
         bingo_boards = []
