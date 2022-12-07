@@ -21,7 +21,7 @@ class AdventOfCodeSolutionBase(abc.ABC):
     @abc.abstractmethod
     def data_parser(self) -> Callable:
         """
-        Returns a function that will operat on each line of data from the input file.
+        Returns a function that will operate on each line of data from the input file.
         """
         pass
 

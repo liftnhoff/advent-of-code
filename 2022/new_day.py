@@ -33,7 +33,7 @@ def _make_solution_directory(day_number: int) -> None:
     open(os.path.join(day_dir, "test_input.txt"), "a").close()
     open(os.path.join(day_dir, "input.txt"), "a").close()
 
-    solution_file = os.path.join(day_dir, "solution.py")
+    solution_file = os.path.join(day_dir, "base/solution.py")
     if not os.path.isfile(solution_file):
         with open(solution_file, "w") as fid:
             fid.write(_SOLUTION_TEMPLATE)
