@@ -1,5 +1,7 @@
 from dataclasses import dataclass
-from typing import Collection
+from typing import Collection, Iterable
+
+from cached_property import cached_property
 
 from base.solution import AdventOfCodeSolutionBase
 
@@ -59,7 +61,7 @@ class Solution(AdventOfCodeSolutionBase):
 
         return visible_tree_indices
 
-    @property
+    @cached_property
     def _column_wise_map(self) -> list[list[int]]:
         column_wise_map = list(
             list([0] * len(self.input_data)) for _ in range(len(self.input_data[0]))
@@ -71,7 +73,34 @@ class Solution(AdventOfCodeSolutionBase):
         return column_wise_map
 
     def part2(self):
-        # for row_index, row in enumerate(self.input_data):
-        #     for column_index, value in enumerate(row):
+        max_score = 0
+        for row_index, row in enumerate(self.input_data):
+            for column_index in range(len(row)):
+                score = self._calculate_tree_sight_score(row_index, column_index)
+                if score > max_score:
+                    max_score = score
 
-        return None
+        return max_score
+
+    def _calculate_tree_sight_score(self, row_index, column_index) -> int:
+        tree_height = self.input_data[row_index][column_index]
+
+        row = self.input_data[row_index]
+        right_score = self._score_sequence(tree_height, row[column_index + 1 :])
+        left_score = self._score_sequence(tree_height, reversed(row[:column_index]))
+
+        column = self._column_wise_map[column_index]
+        down_score = self._score_sequence(tree_height, column[row_index + 1 :])
+        up_score = self._score_sequence(tree_height, reversed(column[:row_index]))
+
+        score = right_score * left_score * down_score * up_score
+        return score
+
+    def _score_sequence(self, reference_height: int, sequence: Iterable) -> int:
+        score = 0
+        for value in sequence:
+            score += 1
+            if value >= reference_height:
+                break
+
+        return score
