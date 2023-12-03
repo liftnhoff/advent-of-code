@@ -22,6 +22,7 @@ class Solution(AdventOfCodeSolutionBase):
         def _parser(row: str) -> Game:
             match = re.match(r"^Game (\d+): (.+)$", row)
             number = int(match.group(1))
+
             raw_rounds = match.group(2).split(";")
             rounds = []
             for raw_round in raw_rounds:
