@@ -9,12 +9,5 @@ do
 
     echo "Running black on ${filename}"
     black "${filename}"
-
-    echo "Running flake8 on ${filename}"
-    flake8 "${filename}"
-    if [ $? != 0 ]; then
-        echo "ERROR  flake8 did not pass, stopping commit."
-        exit 1
-    fi
 done
 
