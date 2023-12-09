@@ -13,7 +13,7 @@ class Solution(AdventOfCodeSolutionBase):
             result += self._extrapolate(sequence)
         return result
 
-    def _extrapolate(self, sequence: tuple[int]) -> int:
+    def _extrapolate(self, sequence: Collection[int]) -> int:
         derivatives = self._get_all_derivatives(sequence)
         rate = 0
         for deltas in reversed(derivatives):
@@ -29,16 +29,9 @@ class Solution(AdventOfCodeSolutionBase):
 
         return deltas
 
-    def _hindcast(self, sequence: tuple[int]) -> int:
-        derivatives = self._get_all_derivatives(sequence)
-        rate = 0
-        for deltas in reversed(derivatives):
-            rate = deltas[0] - rate
-
-        return sequence[0] - rate
-
     def part2(self):
         result = 0
         for sequence in self.input_data:
-            result += self._hindcast(sequence)
+            # Extrapolating the reversed sequence is hindcasting
+            result += self._extrapolate(tuple(reversed(sequence)))
         return result
