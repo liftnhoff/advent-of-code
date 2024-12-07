@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from enum import Enum
 
 import tqdm
-
 from base.solution import AdventOfCodeSolutionBase
 
 
@@ -58,13 +57,19 @@ class Solution(AdventOfCodeSolutionBase):
 
     def _get_all_guard_positions(self):
         positions = [self._get_initial_guard_position()]
+        r_max = len(self.input_data) - 1
+        c_max = len(self.input_data[0]) - 1
         while True:
             next_gp = positions[-1].next_forward_position()
-            try:
-                grid_value = self.input_data[next_gp.ri][next_gp.ci]
-            except IndexError:
+            if (
+                next_gp.ri < 0
+                or next_gp.ri > r_max
+                or next_gp.ci < 0
+                or next_gp.ci > c_max
+            ):
                 break
 
+            grid_value = self.input_data[next_gp.ri][next_gp.ci]
             if grid_value == "#":
                 positions.append(positions[-1].turn_right_position())
             else:
@@ -73,25 +78,6 @@ class Solution(AdventOfCodeSolutionBase):
         return positions
 
     def part2(self):
-        # loop_count = 0
-        # pbar = tqdm.tqdm(
-        #     desc="obstacle locations",
-        #     total=len(self.input_data) * len(self.input_data[0]),
-        # )
-        # for ri, row in enumerate(self.input_data):
-        #     for ci, value in enumerate(row):
-        #         pbar.update(1)
-        #         if value == "#" or value == "^":
-        #             continue
-        #
-        #         if self._is_route_a_loop(ri, ci):
-        #             loop_count += 1
-        #
-        # pbar.close()
-        #
-        # # 2260 is too high
-        # return loop_count
-
         locations = {(p.ri, p.ci) for p in self._get_all_guard_positions()}
         loop_count = 0
         for ri, ci in tqdm.tqdm(locations, desc="obstacle locations"):
@@ -103,10 +89,12 @@ class Solution(AdventOfCodeSolutionBase):
 
         return loop_count
 
-    def _is_route_a_loop(self, obstruction_ri, obstruction_ci) -> bool:
+    def _is_route_a_loop(self, obs_ri, obs_ci) -> bool:
         positions = [self._get_initial_guard_position()]
         gp_set = {positions[-1]}
         is_loop = False
+        r_max = len(self.input_data) - 1
+        c_max = len(self.input_data[0]) - 1
         while True:
             next_gp = positions[-1].next_forward_position()
 
@@ -114,14 +102,16 @@ class Solution(AdventOfCodeSolutionBase):
                 is_loop = True
                 break
 
-            try:
-                grid_value = self.input_data[next_gp.ri][next_gp.ci]
-            except IndexError:
+            if (
+                next_gp.ri < 0
+                or next_gp.ri > r_max
+                or next_gp.ci < 0
+                or next_gp.ci > c_max
+            ):
                 break
 
-            if grid_value == "#" or (
-                next_gp.ri == obstruction_ri and next_gp.ci == obstruction_ci
-            ):
+            grid_value = self.input_data[next_gp.ri][next_gp.ci]
+            if grid_value == "#" or (next_gp.ri == obs_ri and next_gp.ci == obs_ci):
                 positions.append(positions[-1].turn_right_position())
             else:
                 positions.append(next_gp)
