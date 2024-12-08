@@ -62,4 +62,42 @@ class Solution(AdventOfCodeSolutionBase):
         return antinodes
 
     def part2(self):
-        return None
+        pos_by_freq = defaultdict(list)
+        for ri, row in enumerate(self.input_data):
+            for ci, freq in enumerate(row):
+                if freq != ".":
+                    pos_by_freq[freq].append(Position(ri, ci))
+
+        antinodes = set()
+        for freq, positions in pos_by_freq.items():
+            antinodes.update(self._find_antinodes_harmonics(positions))
+
+        return len(antinodes)
+
+    def _find_antinodes_harmonics(self, positions: list[Position]) -> set[Position]:
+        antinodes = set()
+        rmin, rmax = 0, len(self.input_data) - 1
+        cmin, cmax = 0, len(self.input_data[0]) - 1
+        for index, a_pos in enumerate(positions):
+            for b_pos in positions[index:]:
+                if a_pos == b_pos:
+                    continue
+
+                r_delta = a_pos.ri - b_pos.ri
+                c_delta = a_pos.ci - b_pos.ci
+
+                cur_ri = a_pos.ri
+                cur_ci = a_pos.ci
+                while rmin <= cur_ri <= rmax and cmin <= cur_ci <= cmax:
+                    antinodes.add(Position(cur_ri, cur_ci))
+                    cur_ri += r_delta
+                    cur_ci += c_delta
+
+                cur_ri = a_pos.ri
+                cur_ci = a_pos.ci
+                while rmin <= cur_ri <= rmax and cmin <= cur_ci <= cmax:
+                    antinodes.add(Position(cur_ri, cur_ci))
+                    cur_ri -= r_delta
+                    cur_ci -= c_delta
+
+        return antinodes
