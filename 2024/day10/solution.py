@@ -1,4 +1,4 @@
-from collections import deque, OrderedDict, defaultdict
+from collections import OrderedDict, defaultdict, deque
 from dataclasses import dataclass
 
 from base.solution import AdventOfCodeSolutionBase
