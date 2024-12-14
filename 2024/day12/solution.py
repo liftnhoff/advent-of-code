@@ -94,68 +94,69 @@ class Solution(AdventOfCodeSolutionBase):
         )
 
     def part2(self):
-        self.r_min, self.r_max = 0, len(self.input_data) - 1
-        self.c_min, self.c_max = 0, len(self.input_data[0]) - 1
-        self.registered_plots = set()
-
-        regions = []
-        for ri, row in enumerate(self.input_data):
-            for ci, value in enumerate(row):
-                region = self._fill_region(ri, ci, value)
-                if region:
-                    regions.append(region)
-
+        pass
+        # self.r_min, self.r_max = 0, len(self.input_data) - 1
+        # self.c_min, self.c_max = 0, len(self.input_data[0]) - 1
+        # self.registered_plots = set()
+        #
+        # regions = []
+        # for ri, row in enumerate(self.input_data):
+        #     for ci, value in enumerate(row):
+        #         region = self._fill_region(ri, ci, value)
+        #         if region:
+        #             regions.append(region)
+        #
+        # # for region in regions:
+        # #     region_set = set(region)
+        # #     edges = set()
+        # #     for ri, row in enumerate(self.input_data):
+        # #         in_region = False
+        # #         for ci, value in enumerate(row):
+        # #             gp = GardenPlot(ri, ci, value, None)
+        # #             if gp in region_set:
+        # #                 if not in_region:
+        # #                     edges.add((ri, ci))
+        # #                     in_region = True
+        # #             else:
+        # #                 if in_region:
+        # #                     edges.add((ri, ci))
+        # #                     in_region = False
+        # #         if in_region:
+        # #             edges.add((ri, self.c_max + 1))
+        # #
+        # #     print(region)
+        # #     print(edges)
+        #
+        # corner_count = 0  # the number of corners == number of sides
+        # counted_gp = set()
         # for region in regions:
         #     region_set = set(region)
-        #     edges = set()
-        #     for ri, row in enumerate(self.input_data):
-        #         in_region = False
-        #         for ci, value in enumerate(row):
-        #             gp = GardenPlot(ri, ci, value, None)
-        #             if gp in region_set:
-        #                 if not in_region:
-        #                     edges.add((ri, ci))
-        #                     in_region = True
-        #             else:
-        #                 if in_region:
-        #                     edges.add((ri, ci))
-        #                     in_region = False
-        #         if in_region:
-        #             edges.add((ri, self.c_max + 1))
+        #     for gp in region:
+        #         if gp.edge_count == 4:
+        #             corner_count += 4
+        #             counted_gp.add(gp)
+        #         elif gp.edge_count == 3:
+        #             # check if diagonals have edge
+        #             corner_count += 2
+        #             for (ro, co) in ((1, 1), (-1, 1), (-1, -1), (1, -1)):
+        #                 # if self._is_in_region(gp.ri + ro, gp.ci + co, gp.value):
+        #         elif gp.edge_count == 2:
         #
-        #     print(region)
-        #     print(edges)
-
-        corner_count = 0  # the number of corners == number of sides
-        counted_gp = set()
-        for region in regions:
-            region_set = set(region)
-            for gp in region:
-                if gp.edge_count == 4:
-                    corner_count += 4
-                    counted_gp.add(gp)
-                elif gp.edge_count == 3:
-                    # check if diagonals have edge
-                    corner_count += 2
-                    for (ro, co) in ((1, 1), (-1, 1), (-1, -1), (1, -1)):
-                        # if self._is_in_region(gp.ri + ro, gp.ci + co, gp.value):
-                elif gp.edge_count == 2:
-
-                for ro in (-1, 1):
-                    if self._is_in_region(gp.ri + ro, gp.ci, gp.value):
-                        plots_to_check.append(
-                            GardenPlot(gp.ri + ro, gp.ci, region_value, None)
-                        )
-                    else:
-                        edge_count += 1
-
-        price = 0
-        for region in regions:
-            area = 0
-            edge_count = 0
-            for gp in region:
-                area += 1
-                edge_count += gp.edge_count
-            price += area * edge_count
-
-        return price
+        #         for ro in (-1, 1):
+        #             if self._is_in_region(gp.ri + ro, gp.ci, gp.value):
+        #                 plots_to_check.append(
+        #                     GardenPlot(gp.ri + ro, gp.ci, region_value, None)
+        #                 )
+        #             else:
+        #                 edge_count += 1
+        #
+        # price = 0
+        # for region in regions:
+        #     area = 0
+        #     edge_count = 0
+        #     for gp in region:
+        #         area += 1
+        #         edge_count += gp.edge_count
+        #     price += area * edge_count
+        #
+        # return price
