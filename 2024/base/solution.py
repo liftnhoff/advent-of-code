@@ -11,6 +11,7 @@ class AdventOfCodeSolutionBase(abc.ABC):
     def run(self):
         self._load_input_data()
         print(f"part 1: {self.part1()}")
+        self._load_input_data()
         print(f"part 2: {self.part2()}")
 
     def _load_input_data(self):
