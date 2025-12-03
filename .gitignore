@@ -4,3 +4,12 @@ target/
 __pycache__
 .DS_STORE
 
+##### Java #####
+# Compiled class files
+bin/
+*.class
+
+# Package files
+*.jar
+*.war
+*.ear
