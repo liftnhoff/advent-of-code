@@ -45,6 +45,54 @@ public class Day07 {
     }
 
     static long part2(List<String> lines) {
+        long split = -9L;
+
+        List<List<Long>> beamMap = new ArrayList<>();
+        for (int rowIndex = 0; rowIndex < lines.size(); rowIndex++) {
+            beamMap.add(new ArrayList<>());
+            for (char value : lines.get(rowIndex)
+                    .toCharArray()) {
+                if (value == 'S') {
+                    beamMap.get(rowIndex)
+                            .add(1L);
+                } else if (value == '^') {
+                    beamMap.get(rowIndex)
+                            .add(split);
+                } else {
+                    beamMap.get(rowIndex)
+                            .add(0L);
+                }
+            }
+        }
+
+        for (int rowIndex = 0; rowIndex < beamMap.size() - 1; rowIndex++) {
+            for (int colIndex = 0; colIndex < beamMap.getFirst()
+                    .size(); colIndex++) {
+                long value = beamMap.get(rowIndex)
+                        .get(colIndex);
+                if (value > 0) {
+                    List<Long> nextRow = beamMap.get(rowIndex + 1);
+                    long nextValue = nextRow.get(colIndex);
+                    if (nextValue == split) {
+                        nextRow.set(colIndex - 1, value + nextRow.get(colIndex - 1));
+                        nextRow.set(colIndex + 1, value + nextRow.get(colIndex + 1));
+                    } else {
+                        nextRow.set(colIndex, value + nextRow.get(colIndex));
+                    }
+                }
+            }
+        }
+
+//        for (List<Long> row : beamMap) {
+//            System.out.println(row.stream()
+//                    .map(n -> String.format("%3d", n))
+//                    .collect(Collectors.joining()));
+//        }
+
+        return beamMap.getLast().stream().mapToLong(Long::longValue).sum();
+    }
+
+    static long part2_permutation(List<String> lines) {
         List<List<Character>> beamMap = lines.stream()
                 .map(str -> str.chars()
                         .mapToObj(c -> (char) c)
@@ -73,9 +121,6 @@ public class Day07 {
                     pathCount += 1;
 
                     List<ParticlePos> altPath = new ArrayList<>();
-                    for (ParticlePos pPos : currentPath) {
-                        altPath.add(new ParticlePos(pPos.rowIndex(), pPos.colIndex()));
-                    }
                     altPath.add(new ParticlePos(currentPos.rowIndex() + 1, currentPos.colIndex() + 1));
                     paths.add(altPath);
 
