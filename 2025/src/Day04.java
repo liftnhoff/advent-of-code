@@ -33,7 +33,6 @@ public class Day04 {
                     for (int co = -1; co < 2; co++) {
                         int ri = rowIndex + ro;
                         int ci = colIndex + co;
-//                        System.out.printf("%3d %3d %3d\n", ri, ci, freeSpaces);
                         if (ro == 0 && co == 0) {
                             continue;
                         }
@@ -62,6 +61,51 @@ public class Day04 {
     }
 
     static long part2(List<List<Character>> charGrid) {
-        return 0;
+        int rowCount = charGrid.size();
+        int colCount = charGrid.getFirst().size();
+
+        long moveableCount = 0;
+        long cycleMoveable = 1;
+        while (cycleMoveable > 0) {
+            cycleMoveable = 0;
+            for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+                for (int colIndex = 0; colIndex < colCount; colIndex++) {
+                    if (charGrid.get(rowIndex).get(colIndex) == '.') {
+                        continue;
+                    }
+
+                    int freeSpaces = 0;
+                    for (int ro = -1; ro < 2; ro++) {
+                        for (int co = -1; co < 2; co++) {
+                            int ri = rowIndex + ro;
+                            int ci = colIndex + co;
+                            if (ro == 0 && co == 0) {
+                                continue;
+                            }
+                            if (ri < 0 || ri >= rowCount) {
+                                freeSpaces += 1;
+                                continue;
+                            }
+                            if (ci < 0 || ci >= colCount) {
+                                freeSpaces += 1;
+                                continue;
+                            }
+
+                            if (charGrid.get(ri).get(ci) == '.') {
+                                freeSpaces += 1;
+                            }
+                        }
+                    }
+
+                    if (freeSpaces >= 5) {
+                        charGrid.get(rowIndex).set(colIndex, '.');
+                        cycleMoveable += 1;
+                    }
+                }
+            }
+            moveableCount += cycleMoveable;
+        }
+
+        return moveableCount;
     }
 }
