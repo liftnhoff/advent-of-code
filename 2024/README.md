@@ -1,10 +1,8 @@
 # Setup
 
 ```
-pyenv install 3.11.4
-pyenv virtualenv 3.11.4 aoc2023
-pyenv local aoc2023
-pip install -r requirements.txt
+source .aoc-venv/bin/activate
+uv pip install -r requirements.txt
 ```
 
 # Run It
