@@ -13,3 +13,7 @@ bin/
 *.jar
 *.war
 *.ear
+
+##### TypeScript #####
+node_modules
+
