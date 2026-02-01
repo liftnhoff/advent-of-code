@@ -32,7 +32,7 @@ class Solution(AdventOfCodeSolutionBase):
 
         row = []
         for index, value in enumerate(visual):
-            if index % 25 == 0:
+            if index % image.WIDTH == 0:
                 print("".join(v for v in row))
                 row = []
             if value == 1:
@@ -41,7 +41,7 @@ class Solution(AdventOfCodeSolutionBase):
                 row.append(" ")
         print("".join(v for v in row))
 
-        return None
+        return 0
 
 
 class Image:
